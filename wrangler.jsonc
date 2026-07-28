@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-us-sg-aggregator",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-28",
+
+  // 每小时第 17、47 分钟执行，等价于约每 30 分钟一次。
+  // 避开整点，减少上游和定时任务拥堵。
+  "triggers": {
+    "crons": ["17,47 * * * *"]
+  },
+
+  // 先创建 KV，然后把下面的 YOUR_KV_NAMESPACE_ID 替换为真实 ID。
+  "kv_namespaces": [
+    {
+      "binding": "CFIP_KV",
+      "id": "YOUR_KV_NAMESPACE_ID"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}
